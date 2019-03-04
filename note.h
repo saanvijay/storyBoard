@@ -24,6 +24,7 @@ class Note {
                 _text = rhs._text;
                 _tags = rhs._tags;
             }
+            return *this;
         }
 
         // move semantics

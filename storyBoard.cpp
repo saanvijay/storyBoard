@@ -3,13 +3,13 @@
 #include <set>
 #include <iostream>
 #include <string>
+#include <memory>
 using namespace std;
 
 
 void storyBoard::addNote() {
 
-    //_note = new Note;
-    _note = make_shared<Note> ();
+    _note = make_shared<Note>();
     
     string title, text;
     string tags;
@@ -40,8 +40,8 @@ void storyBoard::deleteNote(string title) {
     }
 }
 
-set<Note*> storyBoard::searchByTitle(string title) {
-    set<Note*> titleNotes;
+set<shared_ptr<Note>> storyBoard::searchByTitle(string title) {
+    set<shared_ptr<Note>> titleNotes;
     for (auto &l : _noteList) {
         if (l->getTitle() == title) {
             titleNotes.insert(l);
@@ -52,8 +52,8 @@ return titleNotes;
 
 }
 
-set<Note*> storyBoard::searchByText(string text) {
-    set<Note*> textNotes;
+set<shared_ptr<Note>> storyBoard::searchByText(string text) {
+    set<shared_ptr<Note>> textNotes;
     for (auto &l : _noteList) {
         if (l->getText().find(text)) {
             textNotes.insert(l);
@@ -63,8 +63,8 @@ set<Note*> storyBoard::searchByText(string text) {
 return textNotes;
 }
 
-set<Note*> storyBoard::searchByTag(string tags) {
-    set<Note*> tagNotes;
+set<shared_ptr<Note>> storyBoard::searchByTag(string tags) {
+    set<shared_ptr<Note>> tagNotes;
     for (auto &l : _noteList) {
             if (l->getTags().find(tags)) 
                 tagNotes.insert(l);
