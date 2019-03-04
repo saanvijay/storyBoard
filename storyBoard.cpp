@@ -8,7 +8,9 @@ using namespace std;
 
 void storyBoard::addNote() {
 
-    _note = new Note;
+    //_note = new Note;
+    _note = make_shared<Note> ();
+    
     string title, text;
     string tags;
 
