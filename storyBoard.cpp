@@ -5,6 +5,7 @@
 #include <string>
 #include <memory>
 using namespace std;
+using namespace vijay;
 
 
 void storyBoard::addNote() {

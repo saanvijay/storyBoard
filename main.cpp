@@ -2,10 +2,16 @@
 #include <iostream>
 #include <memory>
 using namespace std;
+using namespace vijay;
 
 int main() {
 
-    auto sB = make_unique<storyBoard>();// C++14 
+    auto sB = make_unique<storyBoard>();
+    if (sB == nullptr) {
+        cout <<"Unable to create storyBoard"<<endl;
+        return 0;
+    }
+    
     sB->addNote();
     sB->printAllNotes();
 

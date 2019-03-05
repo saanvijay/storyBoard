@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 
+namespace vijay {
 class storyBoard {
     shared_ptr<Note> _note;
     vector<shared_ptr<Note>> _noteList;
@@ -51,3 +52,4 @@ class storyBoard {
         vector<shared_ptr<Note>> getNoteList() {return _noteList; }
 
 };
+}

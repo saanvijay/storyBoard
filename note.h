@@ -5,6 +5,7 @@
 #include <string>
 using namespace std;
 
+namespace vijay {
 class Note {
     string _title;
     string _text;
@@ -39,3 +40,4 @@ class Note {
         string getText() { return _text;}
         string getTags() { return _tags;}
 };
+}
