@@ -1,55 +1,58 @@
 #pragma once
 
-#include "note.h"
+#include "Note.h"
 #include <vector>
 #include <memory>
 
 namespace vijay {
-class storyBoard {
-    shared_ptr<Note> _note;
-    vector<shared_ptr<Note>> _noteList;
+    class storyBoard {
+        shared_ptr<Note> m_note;
+        vector<shared_ptr<Note>> m_noteList;
 
-    public:
-        storyBoard() {}
-        ~storyBoard() {}
+        public:
+            storyBoard() {}
+            ~storyBoard() {}
 
-        storyBoard(const storyBoard &rhs) {
-            _note = rhs._note;
-            _noteList = rhs._noteList;
-        }
-       storyBoard & operator =(const storyBoard& rhs) {
-           if (this != &rhs) {
-            _note = rhs._note;
-            _noteList = rhs._noteList;
-           }
-           return *this;
-       }
+            // Copy constructor
+            storyBoard(const storyBoard &rhs) {
+                m_note = rhs.m_note;
+                m_noteList = rhs.m_noteList;
+            }
 
-        // move semantics
-        storyBoard(storyBoard&& rhs) {
-            _note = std::move(rhs._note);
-            _noteList = std::move(rhs._noteList);
-           // rhs = nullptr;
+            // Assignment operator
+            storyBoard & operator =(const storyBoard& rhs) {
+                // avoid self-copy
+                if (this != &rhs) {
+                    m_note = rhs.m_note;
+                    m_noteList = rhs.m_noteList;
+                }
+                return *this;
+            }
 
-        }
-       storyBoard& operator=(storyBoard &&rhs) {
-           if (this != &rhs){
-            _note = std::move(rhs._note);
-            _noteList = std::move(rhs._noteList);
-           }
-           return *this;
+            // move copy constructor
+            storyBoard(storyBoard&& rhs) {
+                m_note = std::move(rhs.m_note);
+                m_noteList = std::move(rhs.m_noteList);
+            }
 
-       }
+            // move assignment operator
+            storyBoard& operator=(storyBoard &&rhs) {
+                if (this != &rhs) { // avoid self-move
+                    m_note = std::move(rhs.m_note);
+                    m_noteList = std::move(rhs.m_noteList);
+                }
+                return *this;
+            }
 
-        void addNote();
-        void deleteNote(string);
-        set<shared_ptr<Note>> searchByTitle(string title);
-        set<shared_ptr<Note>> searchByText(string text);
-        set<shared_ptr<Note>> searchByTag(string tag);
-        void printAllNotes();
+            void addNote(string);
+            void deleteNote(string);
+            set<shared_ptr<Note>> searchByTitle(string title);
+            set<shared_ptr<Note>> searchByText(string text);
+            set<shared_ptr<Note>> searchByTag(set<string> tag);
+            void printAllNotes();
 
-        shared_ptr<Note> getNote() { return _note; }
-        vector<shared_ptr<Note>> getNoteList() {return _noteList; }
+            shared_ptr<Note> getNote() { return m_note; }
+            vector<shared_ptr<Note>> getNoteList() {return m_noteList; }
 
-};
+    };
 }

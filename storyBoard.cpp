@@ -7,80 +7,104 @@
 using namespace std;
 using namespace vijay;
 
+void storyBoard::addNote(string title) {
 
-void storyBoard::addNote() {
+    string text;
+    set<string> tags;
 
-    _note = make_shared<Note>();
+    // create a shared_ptr ( smart pointer)
+    m_note = make_shared<Note>();
     
-    string title, text;
-    string tags;
-
-    cout << "Enter Title" << endl;
-    getline(cin,title);
-    
-    _note->setTitle(title);
-
-    cout << "Enter text" << endl;
+    cout << "Enter user text" << endl;
     getline(cin,text);
-   _note->setText(text);
-   
-    cout << "Enter Tag" << endl;
-    getline(cin,tags);
-    _note->setTags(tags);
+    
+    while(1) {
 
-    _noteList.push_back(_note);
+        static int i = 0;
+        string tag="";
+
+        if (i) cin.get();// to make getline should work in the loop
+
+        cout << "Enter user Tags" << endl;
+        getline(cin,tag);
+        tags.insert(tag); 
+
+        cout << "More tags? (Y/N)?" << endl;
+        char yn;
+        cin>>yn;
+
+        i++;
+
+        if (yn == 'y' || yn =='Y') continue;
+        else break;
+    }
+
+    m_note->setTitle(title);
+    m_note->setText(text);
+    m_note->setTags(tags);
+
+    // push this note to vector of notes
+    m_noteList.push_back(m_note);
 }
 
 
 void storyBoard::deleteNote(string title) {
-    for (auto &tList : _noteList) {
-        if (title == tList->getTitle()) {
-                _noteList.erase(std::remove(_noteList.begin(), _noteList.end(), tList), _noteList.end());
-                cout << "Deleting Note...." <<endl;
+    for (auto &eachNote : m_noteList) {
+        if (title == eachNote->getTitle()) {
+                m_noteList.erase(std::remove(m_noteList.begin(), m_noteList.end(), eachNote), m_noteList.end());
+                cout << "*** Deleting a Note : " << title <<endl;
         }
     }
 }
 
 set<shared_ptr<Note>> storyBoard::searchByTitle(string title) {
-    set<shared_ptr<Note>> titleNotes;
-    for (auto &l : _noteList) {
-        if (l->getTitle() == title) {
-            titleNotes.insert(l);
-            cout << "---- Title Found ----" << endl;
+    set<shared_ptr<Note>> tNotes;
+    for (auto &eachNote : m_noteList) {
+        if (eachNote->getTitle() == title) {
+            tNotes.insert(eachNote);
+            cout << "*** Title found in Notes : " << title <<endl;
         }
     }
-return titleNotes;
-
+    return tNotes;
 }
 
 set<shared_ptr<Note>> storyBoard::searchByText(string text) {
-    set<shared_ptr<Note>> textNotes;
-    for (auto &l : _noteList) {
-        if (l->getText().find(text)) {
-            textNotes.insert(l);
-            cout << "---- Text Found ----" << endl;
+    set<shared_ptr<Note>> tNotes;
+    for (auto &eachNote : m_noteList) {
+        if (eachNote->getText() == text) {
+            tNotes.insert(eachNote);
+            cout << "*** Text found in Notes: " << text <<endl;
         }
     }
-return textNotes;
+    return tNotes;
 }
 
-set<shared_ptr<Note>> storyBoard::searchByTag(string tags) {
-    set<shared_ptr<Note>> tagNotes;
-    for (auto &l : _noteList) {
-            if (l->getTags().find(tags)) 
-                tagNotes.insert(l);
-                cout << "---- Tag Found ----" << endl;
+set<shared_ptr<Note>> storyBoard::searchByTag(set<string> tags) {
+    set<shared_ptr<Note>> tNotes;
+    for (auto &eachNote : m_noteList) {
+            for ( auto &eachNoteTag: eachNote->getTags()) {
+                    for (auto &tag : tags) {
+                        if (tag == eachNoteTag) {
+                            tNotes.insert(eachNote);
+                            cout <<"*** Tags found in Notes : "<< tag <<endl;
+                        }
+                    }
+            }
+                
     }
-return tagNotes;
+return tNotes;
 }
 
 void storyBoard::printAllNotes() {
 
-    for (auto &nL : _noteList) {
+    for (auto &eachNote : m_noteList) {
         cout << "StoryBoard Details" << endl;
         cout << "-------------------" << endl;
-        cout << "Title      : " << nL->getTitle() << endl;
-        cout << "Text       : " << nL->getText() << endl;
-        cout << "Tags       : " << nL->getTags() << endl;
+        cout << "Title      : " << eachNote->getTitle() << endl;
+        cout << "Text       : " << eachNote->getText() << endl;
+        cout << "Tags       : { ";
+        for (auto tag : eachNote->getTags())
+            cout << "{ " << tag << " }, ";
+        cout << " }" << endl<<endl;
     }
 }
